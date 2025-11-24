@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "37979013-3636978f-4bb7-4efe-85ea-ca8e7a350229",
+		"name": "Deals API",
+		"description": "# Deals API Documentation\n\nBase URL:\n\n```\n/api/deals\n\n ```\n\n---\n\n# Deal Fields\n\n``` ts\nthumbnail_photo?: Media            // send as numeric ID\ncover_photo?: Media                // send as numeric ID\nis_featured?: boolean\nlaw_firms?: Firm[]                 // connect via documentId\nlawyers?: Lawyer[]                 // connect via documentId\ncountry?: string\ncountry_code?: string\ncity?: string\ntitle?: string\ntotal_value?: string\ndescription?: string\noverview?: BlocksListItem[]        // [{ \"text\": \"...\" }]\ntype?: \"M&A\" | \"Private Equity\"\njurisdiction?: \"Europe\" | \"UK\" | \"Germany\" | \"USA\" | \"France\" | \"Asia & Middle East\"\nsize?: \"x<500M\" | \"x>500M&x<1B\" | \"x>1B\"\nsource_url?: string\nclients?: BlocksListItem[]         // [{ \"text\": \"...\" }]\nenrichedId: string\n\n ```\n\n---\n\n# Endpoints\n\n## Get All Deals\n\n```\nGET /api/deals\n\n ```\n\n### Query Options\n\n| Feature | Example |\n| --- | --- |\n| Populate all | `?populate=\\\\*` |\n| Populate fields | `?populate=law_firms,lawyers` |\n| Nested populate | `?populate[law_firms][populate]=headquarters` |\n| Filter | `?filters[type][$eq]=M&A` |\n| Search | `?filters[title][$containsi]=acquisition` |\n| Pagination | `?pagination[page]=1&pagination[pageSize]=20` |\n| Sorting | `?sort=total_value:desc` |\n\n---\n\n# Populate Examples\n\n### All relations\n\n```\nGET /api/deals?populate=*\n\n ```\n\n### Nested\n\n```\nGET /api/deals?populate[law_firms][populate]=offices\n\n ```\n\n```\nGET /api/deals?populate[lawyers][populate]=career\n\n ```\n\n---\n\n# Filter Examples\n\n```\nGET /api/deals?filters[type][$eq]=M&A\n\n ```\n\n```\nGET /api/deals?filters[jurisdiction][$eq]=USA\n\n ```\n\n```\nGET /api/deals?filters[size][$eq]=x>1B\n\n ```\n\n```\nGET /api/deals?filters[law_firms][documentId][$eq]=firm-123\n\n ```\n\n```\nGET /api/deals?filters[title][$containsi]=acquisition\n\n ```\n\n---\n\n# Create Deal\n\n(Strapi Document Mode — relations use **documentId**, media uses **media ID**)\n\n```\nPOST /api/deals\n\n ```\n\n``` json\n{\n  \"data\": {\n    \"title\": \"Acquisition of Finch Group\",\n    \"type\": \"M&A\",\n    \"jurisdiction\": \"UK\",\n    \"size\": \"x>1B\",\n    \"total_value\": \"$1.2B\",\n    \"city\": \"London\",\n    \"thumbnail_photo\": 28,\n    \"cover_photo\": 55,\n    \"overview\": [\n      { \"text\": \"Major acquisition in retail sector.\" },\n      { \"text\": \"Represented buyer consortium.\" }\n    ],\n    \"clients\": [\n      { \"text\": \"Finch Holdings\" }\n    ],\n    \"law_firms\": {\n      \"connect\": [\n        { \"documentId\": \"firm-100\" },\n        { \"documentId\": \"firm-200\" }\n      ]\n    },\n    \"lawyers\": {\n      \"connect\": [\n        { \"documentId\": \"lawyer-001\" }\n      ]\n    }\n  }\n}\n\n ```\n\n---\n\n# Update Deal\n\n```\nPUT /api/deals/:documentId\n\n ```\n\n### Update relational sets + media\n\n``` json\n{\n  \"data\": {\n    \"cover_photo\": 99,\n    \"law_firms\": {\n      \"set\": [\n        { \"documentId\": \"firm-new-01\" },\n        { \"documentId\": \"firm-new-02\" }\n      ]\n    },\n    \"lawyers\": {\n      \"connect\": [\n        { \"documentId\": \"lawyer-add-77\" }\n      ]\n    }\n  }\n}\n\n ```\n\n---\n\n# Disconnect Relations\n\n## Disconnect all law firms (clear many-to-many)\n\n``` json\n{\n  \"data\": {\n    \"law_firms\": {\n      \"set\": []\n    }\n  }\n}\n\n ```\n\n## Disconnect selected lawyers\n\n``` json\n{\n  \"data\": {\n    \"lawyers\": {\n      \"disconnect\": [\n        { \"documentId\": \"lawyer-001\" },\n        { \"documentId\": \"lawyer-777\" }\n      ]\n    }\n  }\n}\n\n ```\n\n---\n\n# Delete Deal\n\n```\nDELETE /api/deals/:documentId\n\n ```\n\n---\n\n# Complete Query Example\n\n```\nGET /api/deals\n  ?populate[law_firms][populate]=offices\n  &populate[lawyers][populate]=career\n  &filters[type][$eq]=Private Equity\n  &filters[jurisdiction][$eq]=Europe\n  &sort=total_value:desc\n  &pagination[page]=1\n  &pagination[pageSize]=10\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create",
+			"id": "37979013-3d5025f6-8462-4e1b-a52e-ea728ecc83d5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"is_featured\": true,\n    \"title\": \"Big Law Firms Circle as DoorDash Targets £2.9B Deliveroo Acquisition\",\n    \"description\": \"Kirkland & Ellis has advised Warburg Pincus on its acquisition of a majority stake in uvex group, a leading provider of protective equipment and safety solutions. The transaction marks another significant investment by Warburg Pincus in the industrial safety sector, reinforcing its long-term strategy in the European market.\",\n    \"total_value\": \"$520 M\",\n    \"type\": \"M&A\",\n    \"jurisdiction\": \"France\",\n    \"size\": \"x<500M\",\n    \"source_url\": \"https://bloomberg.com\",\n    \"enrichedId\": \"enrichedId123\",\n    \"cover_photo\": 37\n  }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{BASE_URL}}/deals",
+					"protocol": "https",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"deals"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAll",
+			"id": "37979013-9617aaad-9229-42a5-ba11-a14a6c1c723b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BASE_URL}}/deals?filters[title][$containsi]=b",
+					"protocol": "https",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"deals"
+					],
+					"query": [
+						{
+							"key": "filters[title][$containsi]",
+							"value": "b"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findOne",
+			"id": "37979013-dc27d221-32ae-4747-9e33-e99f5a1e02dd",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BASE_URL}}/deals/fynqicnj5xhs1luhik6tauxi",
+					"protocol": "https",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"deals",
+						"fynqicnj5xhs1luhik6tauxi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"id": "37979013-ad2b745e-a2a2-48f0-9546-70b11f6f3d2b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"jurisdiction\": \"Europe\",\n    \"lawyers\": {\n      \"disconnect\": [\"qtvyu1xye7vbinsrq9koytzh\"],\n      \"connect\": [\"vxkl6haegqsxta7ruozda35u\"]\n    }\n  }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{BASE_URL}}/deals/fynqicnj5xhs1luhik6tauxi?populate=lawyers",
+					"protocol": "https",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"deals",
+						"fynqicnj5xhs1luhik6tauxi"
+					],
+					"query": [
+						{
+							"key": "populate",
+							"value": "lawyers"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{API_TOKEN}}",
+				"type": "string"
+			}
+		]
+	}
+}
