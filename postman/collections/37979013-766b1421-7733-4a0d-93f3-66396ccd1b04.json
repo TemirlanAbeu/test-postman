@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "37979013-766b1421-7733-4a0d-93f3-66396ccd1b04",
+		"name": "Firms API",
+		"description": "# Firm API Documentation\n\nBase URL:\n\n```\n/api/firms\n```\n\n---\n\n# Firm Fields\n\n```ts\nname: string\nlogo?: Media                // send as numeric ID\ncover_photo?: Media         // send as numeric ID\npractice_areas?: BlocksListItem[]\nbio?: string\nwebsite_url?: string\nlinkedin_url?: string\nfirm_size?: number\ntotal_revenue?: string\nprofit_per_partner?: string\nrevenue_per_lawyer?: string\npartnership_structure?: string\navg_partner_salary?: string\nawards?: string\nassociates?: number\npartners?: number\ncounsels?: number\nheadquarters?: FirmHeadquarters\nlawyers?: Lawyer[]\noffices?: OfficeLocation[]\ndeals?: Deal[]\nlaw_group?: Magic Circle / Silver Circle / Wall Street / ...\nnews?: News[]\nsource_url?: string\nenrichedId: string\n```\n\n---\n\n# Endpoints\n\n## Get All Firms\n\n```\nGET /api/firms\n```\n\n### Query Options\n\n| Feature         | Example                                       |\n| --------------- | --------------------------------------------- |\n| Populate all    | `?populate=*`                                 |\n| Populate fields | `?populate=lawyers,offices,deals`             |\n| Nested populate | `?populate[lawyers][populate]=deals`          |\n| Filter          | `?filters[name][$containsi]=baker`            |\n| Pagination      | `?pagination[page]=1&pagination[pageSize]=20` |\n| Sorting         | `?sort=name:asc`                              |\n\n---\n\n# Populate Examples\n\n### All relations\n\n```\nGET /api/firms?populate=*\n```\n\n### Nested\n\n```\nGET /api/firms?populate[lawyers][populate]=career\n```\n\n```\nGET /api/firms?populate[offices][populate]=city\n```\n\n```\nGET /api/firms?populate[deals][populate]=law_firms\n```\n\n---\n\n# Filter Examples\n\n```\nGET /api/firms?filters[law_group][$eq]=Magic%20Circle\n```\n\n```\nGET /api/firms?filters[name][$containsi]=mckenzie\n```\n\n```\nGET /api/firms?filters[partners][$gte]=100\n```\n\n```\nGET /api/firms?filters[offices][documentId][$eq]=office-123\n```\n\n---\n\n# Create Firm\n\n(Strapi Document Mode — relations use **documentId**, media uses **ID**)\n\n```\nPOST /api/firms\n```\n\n```json\n{\n  \"data\": {\n    \"name\": \"Baker & Finch LLP\",\n    \"firm_size\": 2200,\n    \"law_group\": \"Magic Circle\",\n\n    \"logo\": 12,\n    \"cover_photo\": 33,\n    \"lawyers\": {\n      \"connect\": [\n        { \"documentId\": \"lawyer-100\" },\n        { \"documentId\": \"lawyer-220\" }\n      ]\n    },\n\n    \"offices\": {\n      \"connect\": [\n        { \"documentId\": \"office-001\" },\n        { \"documentId\": \"office-002\" }\n      ]\n    },\n\n    \"deals\": {\n      \"connect\": [\n        { \"documentId\": \"deal-009\" }\n      ]\n    },\n\n    \"news\": {\n      \"connect\": [\n        { \"documentId\": \"news-555\" }\n      ]\n    }\n  }\n}\n```\n\n---\n\n# Update Firm\n\n```\nPUT /api/firms/:documentId\n```\n\n### Example: Update Media + Swap Lawyers\n\n```json\n{\n  \"data\": {\n    \"cover_photo\": 44,\n\n    \"lawyers\": {\n      \"set\": [\n        { \"documentId\": \"lawyer-new-01\" },\n        { \"documentId\": \"lawyer-new-02\" }\n      ]\n    }\n  }\n}\n```\n\n---\n\n# Disconnect Examples\n\n## Disconnect Multiple (many-to-many)\n\n### Remove some lawyers\n\n```json\n{\n  \"data\": {\n    \"lawyers\": {\n      \"disconnect\": [\n        { \"documentId\": \"lawyer-100\" },\n        { \"documentId\": \"lawyer-220\" }\n      ]\n    }\n  }\n}\n```\n\n### Remove all offices\n\n```json\n{\n  \"data\": {\n    \"offices\": {\n      \"set\": []\n    }\n  }\n}\n```\n\n---\n\n# Delete Firm\n\n```\nDELETE /api/firms/:documentId\n```\n\n---\n\n# Complete Query Example\n\n```\nGET /api/firms\n  ?populate[lawyers][populate]=deals\n  &populate[offices]=*\n  &filters[law_group][$eq]=Magic%20Circle\n  &filters[partners][$gte]=100\n  &sort=name:asc\n  &pagination[page]=1\n  &pagination[pageSize]=10\n```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create",
+			"id": "37979013-bbb4c2bc-992a-4814-8316-e5158ef0e059",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{API_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"name\": \"Wilson Sonsini Goodrich & Rosati ABC groups\",\n    \"website_url\": \"https://careers.wsgr.com\",\n    \"linkedin_url\": \"https://linkedin.com/\",\n    \"firm_size\": 2004,\n    \"total_revenue\": \"$1.9 billion\",\n    \"partnership_structure\": \"Professional Corporation (P.C.)\",\n    \"avg_partner_salary\": null,\n    \"awards\": null,\n    \"logo\": 17,\n    \"bio\": \"The unique history of Wilson Sonsini Goodrich & Rosati closely traces the birth and evolution of Silicon Valley.\\n\\nFor morethan 60 years, Wilson Sonsini has represented technology pioneers associated with virtually every milestone innovation, as well as life sciences trailblazers shaping the future of healthcare.\\n\\nToday, the firm is synonymous with ushering promising, innovative companies through their business life cycle.\",\n    \"profit_per_partner\": null,\n    \"revenue_per_lawyer\": null,\n    \"associates\": 12,\n    \"partners\": 40,\n    \"counsels\": 23,\n    \"law_group\": \"Magic Circle\",\n    \"source_url\": \"https://bloomberg.com/\",\n    \"enrichedId\": \"abcd123\",\n    \"lawyers\": {\n      \"connect\": [\n        \"tkq376sakpwn6fihefc36jnh\",\n        \"tkq376sakpwn6fihefc36jnh\",\n        \"b4sqzzlxtnitary82xytxyo2\"\n      ]\n    },\n    \"deals\": {\n      \"connect\": [\n        \"spl89q7r5d30w9ppseya2hu8\",\n        \"fynqicnj5xhs1luhik6tauxi\"\n      ]\n    },\n    \"news\": {\n      \"connect\": [\n        \"c1ij5iqt8qdopdipxko4neet\",\n        \"fcqz1k5h8ky3vbfxw5gt6f2j\"\n      ]\n    }\n  }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{BASE_URL}}/firms",
+					"protocol": "https",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"firms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAll",
+			"id": "37979013-c30b9da2-c688-4482-9b2d-53a85adced6a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{API_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BASE_URL}}/firms?populate=lawyers",
+					"protocol": "https",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"firms"
+					],
+					"query": [
+						{
+							"key": "populate",
+							"value": "lawyers"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findOne",
+			"id": "37979013-e36e4e93-4242-44f2-855f-4e60053a889a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{API_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BASE_URL}}/firms/b53v1u4bbfawxp4px9mnvvei?populate=logo",
+					"protocol": "https",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"firms",
+						"b53v1u4bbfawxp4px9mnvvei"
+					],
+					"query": [
+						{
+							"key": "populate",
+							"value": "logo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"id": "37979013-4d02a3ad-49ad-40cd-9bf0-d2df25d33c8a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{API_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"name\": \"Wilson Sonsini Goodrich & Rosati ABC group\"\n  }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{BASE_URL}}/firms/b53v1u4bbfawxp4px9mnvvei",
+					"protocol": "https",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"firms",
+						"b53v1u4bbfawxp4px9mnvvei"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
