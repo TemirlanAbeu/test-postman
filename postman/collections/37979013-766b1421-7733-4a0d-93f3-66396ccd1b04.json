@@ -45,40 +45,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"id": "37979013-51ebcd87-93fe-4327-9f59-9abf7bf4dcc3",
-					"name": "create",
-					"originalRequest": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"data\": {\n    \"name\": \"Wilson Sonsini Gorich & Rosati ABC groups\",\n    \"website_url\": \"https://careers.wsgr.com\",\n    \"linkedin_url\": \"https://linkedin.com/\",\n    \"firm_size\": 2001,\n    \"total_revenue\": \"$1.9 billion\",\n    \"partnership_structure\": \"Professional Corporation (P.C.)\",\n    \"avg_partner_salary\": null,\n    \"awards\": null,\n    \"logo\": 17,\n    \"bio\": \"The unique history of Wilson Sonsini Goodrich & Rosati closely traces the birth and evolution of Silicon Valley.\\n\\nFor morethan 60 years, Wilson Sonsini has represented technology pioneers associated with virtually every milestone innovation, as well as life sciences trailblazers shaping the future of healthcare.\\n\\nToday, the firm is synonymous with ushering promising, innovative companies through their business life cycle.\",\n    \"profit_per_partner\": null,\n    \"revenue_per_lawyer\": null,\n    \"associates\": 12,\n    \"partners\": 40,\n    \"counsels\": 23,\n    \"law_group\": \"Magic Circle\",\n    \"source_url\": \"https://bloomberg.com/\",\n    \"enrichedId\": \"abcd123\",\n    \"lawyers\": {\n      \"connect\": [\n        \"tkq376sakpwn6fihefc36jnh\",\n        \"tkq376sakpwn6fihefc36jnh\",\n        \"b4sqzzlxtnitary82xytxyo2\"\n      ]\n    },\n    \"deals\": {\n      \"connect\": [\n        \"spl89q7r5d30w9ppseya2hu8\",\n        \"fynqicnj5xhs1luhik6tauxi\"\n      ]\n    },\n    \"news\": {\n      \"connect\": [\n        \"c1ij5iqt8qdopdipxko4neet\",\n        \"fcqz1k5h8ky3vbfxw5gt6f2j\"\n      ]\n    }\n  }\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{BASE_URL}}/firms",
-							"protocol": "https",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"firms"
-							]
-						}
-					},
-					"_postman_previewlanguage": null,
-					"header": null,
-					"cookie": [],
-					"responseTime": null,
-					"body": null
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "findAll",
