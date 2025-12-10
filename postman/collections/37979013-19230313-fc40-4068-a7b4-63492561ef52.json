@@ -5,5 +5,18 @@
 		"description": "# **Strapi File Upload & Media Connection**\n\nmore info: https://docs.strapi.io/cms/api/rest/upload#upload-files\n\nBase URL:\n\n```\n/api/upload\n```\n\n---\n\n## **1. Upload a File**\n\n**Endpoint**:\n\n```\nPOST /api/upload\n```\n\n**Headers**:\n\n```\nContent-Type: multipart/form-data\n```\n\n**Body** (form-data):\n\n| Key         | Type  | Value                                             |\n| ------ | ---- | -----------------------|\n| files        | File     | Choose file to upload                 |\n| ref           | Text    | Entity name (e.g., firm)             |\n| refId       |  Text    | documentId of entity                 |\n| field       | Text      | Name of the media field (e.g., logo) |\n| source    | Text     | Optional, e.g., \"API\"                |\n\n**Example using Postman**:\n\n* `files`: select `logo.png`\n* `ref`: `\"firm\"`\n* `refId`: `\"firm-123\"`\n* `field`: `\"logo\"`\n\n**Success Response**:\n\n```json\n[\n  {\n    \"id\": 12,\n    \"name\": \"logo.png\",\n    \"url\": \"/uploads/logo_123.png\",\n    \"mime\": \"image/png\",\n    \"size\": 34.2,\n    \"provider\": \"local\",\n    \"related\": [\n      {\n        \"id\": 1,\n        \"ref\": \"firm\",\n        \"refId\": \"firm-123\",\n        \"field\": \"logo\"\n      }\n    ]\n  }\n]\n```\n\n---\n\n## **2. Upload File Without Connecting**\n\nYou can upload a file first, then connect it to an entity later:\n\n**POST** `/api/upload`\n\n**form-data**:\n\n* `files`: choose your file\n\n**Then** connect via entity using its **numeric ID**:\n\n```json\n{\n  \"data\": {\n    \"logo\": 12,       // numeric media ID from upload response\n    \"cover_photo\": 13\n  }\n}\n```\n\n---\n\n## **3. Connect Uploaded File to Entity**\n\n**Example: Connect uploaded image to Firm**\n\n```\nPUT /api/firms/:documentId\n```\n\n```json\n{\n  \"data\": {\n    \"logo\": 12,          // media ID\n    \"cover_photo\": 13     // media ID\n  }\n}\n```\n\n**Notes**:\n\n* Media fields are always numeric IDs\n* For single media: `field: number`\n* For multiple media: `field: [number, number]`\n\n---\n\n## **4. Replace Existing Media**\n\n**Example: Replace firm logo**\n\n```json\n{\n  \"data\": {\n    \"logo\": 20    // new media ID, replaces old one\n  }\n}\n```\n\n---\n\n## **5. Disconnect Media**\n\n**Example: Remove logo**\n\n```json\n{\n  \"data\": {\n    \"logo\": null\n  }\n}\n```\n\n* Setting `null` removes the connection\n* File itself remains in the media library\n\n---\n\n## **6. Multiple Media Upload**\n\n**Example: Gallery for Lawyer**\n\n---\n\n## **7. Full Flow Example**\n\n1. **Upload file** → get `id`\n\n```json\nPOST /api/upload\nfiles: photo.jpg\n```\n\nResponse:\n\n```json\n[ { \"id\": 44, \"name\": \"photo.jpg\" } ]\n```\n\n2. **Connect to entity**\n\n```json\nPUT /api/lawyers/lawyer-001\n{\n  \"data\": {\n    \"thumbnail_photo\": 44\n  }\n}\n```\n\n3. **Replace later**\n\n```json\nPUT /api/lawyers/lawyer-001\n{\n  \"data\": {\n    \"thumbnail_photo\": 45\n  }\n}\n```\n\n4. **Disconnect**\n\n```json\nPUT /api/lawyers/lawyer-001\n{\n  \"data\": {\n    \"thumbnail_photo\": null\n  }\n}\n```",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
-	"item": []
+	"item": [
+		{
+			"name": "New Request",
+			"id": "37979013-c91d76c5-8442-4dc8-a02b-d6fcdc8fb24b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
 }
