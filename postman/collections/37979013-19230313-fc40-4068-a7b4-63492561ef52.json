@@ -7,14 +7,15 @@
 	},
 	"item": [
 		{
-			"name": "New Request",
+			"name": "Get Firm Lawyers Statistics by City",
 			"id": "37979013-c91d76c5-8442-4dc8-a02b-d6fcdc8fb24b",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"description": "# Get Firm Lawyers Statistics by City\n\n## Overview\nThis endpoint retrieves statistical information about lawyers within a specific firm, filtered by city. It returns a breakdown of lawyers by their position levels (partner, counsel, associate) for the specified location.\n\n## Request Details\n\n### Method\n`GET`\n\n### Endpoint\n```\n/api/firms/{firmId}/lawyers-stats\n```\n\n### Base URL\n```\nhttp://localhost:1337\n```\n\n## Parameters\n\n### Path Parameters\n\n| Parameter | Type | Required | Description |\n|-----------|------|----------|-------------|\n| `firmId` | string | Yes | Unique identifier of the firm. Example: `ftmuat9ar15ybpt8hmadfl3k` |\n\n### Query Parameters\n\n| Parameter | Type | Required | Description |\n|-----------|------|----------|-------------|\n| `city` | string | Yes | Name of the city to filter lawyer statistics. Example: `Almaty` |\n\n## Response\n\n### Success Response (200 OK)\n\nReturns a JSON object containing the count of lawyers by position level.\n\n**Response Structure:**\n```json\n{\n  \"data\": {\n    \"partner\": number,\n    \"counsel\": number,\n    \"associate\": number\n  }\n}\n```\n\n**Example Response:**\n```json\n{\n  \"data\": {\n    \"partner\": 1,\n    \"counsel\": 0,\n    \"associate\": 0\n  }\n}\n```\n\n**Response Fields:**\n\n| Field | Type | Description |\n|-------|------|-------------|\n| `data.partner` | integer | Number of partners in the specified city |\n| `data.counsel` | integer | Number of counsels in the specified city |\n| `data.associate` | integer | Number of associates in the specified city |\n\n## Status Codes\n\n| Status Code | Description |\n|-------------|-------------|\n| 200 | Success - Statistics retrieved successfully |\n| 400 | Bad Request - Invalid firm ID or missing required parameters |\n| 404 | Not Found - Firm not found or no data available for the specified city |\n| 500 | Internal Server Error - Server encountered an error processing the request |\n\n## Use Cases\n\n- Display lawyer distribution by seniority level in a specific office location\n- Generate reports on firm staffing by city\n- Analyze firm structure across different geographical locations\n- Support workforce planning and resource allocation decisions"
 			},
 			"response": []
 		}
